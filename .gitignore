@@ -1,3 +1,7 @@
 figures/**
-data/**
-
+results/**
+*.png
+*.pdf
+*.npy
+*.docx
+venv/**
