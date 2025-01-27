@@ -214,12 +214,12 @@ library("viridis")
 
 n = max(length(mtor_data$Value), length(f5x_data$Value))
 p = (1:n - 1)/(n - 1)
-p = (1:100)/100
+# p = (1:1000)/1000
 q_m = quantile(mtor_data$Value,p)
 q_f = quantile(f5x_data$Value,p)
-qs = data.frame(mTOR = q_m, F5X = q_f, Quantile = 1:100)
+qs = data.frame(mTOR = q_m, F5X = q_f, Quantile = p*100)
 #plot(q_m, q_f)
-new_qq <- ggplot(qs,aes(x = mTOR, y= F5X, colour = Quantile)) + geom_point(size = 2) + 
+new_qq <- ggplot(qs,aes(x = mTOR, y= F5X, colour = Quantile)) + geom_point(size = 1.5) + 
   coord_fixed() +
   xlim(0, 65) + ylim(0, 65)  +
   scale_color_viridis(option = "D") +
@@ -232,7 +232,7 @@ new_qq <- ggplot(qs,aes(x = mTOR, y= F5X, colour = Quantile)) + geom_point(size 
   theme(axis.title.y = element_text(size = 12),
         axis.title.x = element_text(size = 12),
         axis.text = element_text(size = 10),
-        legend.position.inside = c(0.7, 0.5))
+        legend.position = "top")
 
 # save as a pdf
 ggsave("qq_plot_colored.pdf",dpi = 300, width = 4, height = 3.5)
