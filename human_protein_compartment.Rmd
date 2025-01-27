@@ -1,0 +1,86 @@
+---
+title: "human_protein_cellular_localization"
+output: html_document
+date: "2024-06-30"
+---
+
+This script extract all the subcellular localization information for a list of human proteins
+The localization information is downloaded from https://compartments.jensenlab.org/Downloads
+
+This is used in Yifei's data analysis pipline
+
+```{r}
+library(readr)
+```
+
+```{r}
+# Using read_tsv to read a TSV file
+data_file <- "human_compartment_integrated_full.tsv"
+data <- read_tsv(data_file)
+
+# Display the first few rows of the data
+head(data)
+  
+# Rename columns for easier reference
+colnames(data) <- c( "Protein1", "Protein2", "GO_ID", "Localization", "Value")
+
+# Filter data for the given protein names
+protein_list <- c("cntnap1", "potee")  
+filtered_data <- data[data$Protein1 %in% protein_list, ]
+
+# Extract localization information
+localization_info <- filtered_data[, c("Protein1", "Localization","Value")]
+```
+
+
+```{r}
+# Load the readr package
+library(readr)
+
+# Function to extract localization information for given protein names
+extract_localization <- function(tsv_file, protein_list) {
+  # Read the TSV file
+  data <- read_tsv(tsv_file, col_names = FALSE)
+  
+  # Rename columns for easier reference
+  colnames(data) <- c("Index", "Protein1", "Protein2", "GO_ID", "Localization", "Value")
+  
+  # Filter data for the given protein names
+  filtered_data <- data[data$Protein1 %in% protein_list, ]
+  
+  # Extract localization information
+  localization_info <- filtered_data[, c("Protein1", "Localization","Value")]
+  
+  return(localization_info)
+}
+
+# Example usage
+tsv_file <- "human_compartment_integrated_full.tsv"
+protein_list <- c("cntnap1", "potee")  # Replace with your list of protein names
+
+localization_info <- extract_localization(tsv_file, protein_list)
+print(localization_info)
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

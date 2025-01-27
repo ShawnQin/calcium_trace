@@ -1,2 +1,2 @@
 # calcium_trace
-Calcium imaging analysis for the Alzheimer's disease
+Calcium imaging analysis for the Alzheimer's disease project
