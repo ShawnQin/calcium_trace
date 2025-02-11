@@ -1,6 +1,8 @@
 ---
 title: "figure7g_size_distri"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: "2025-01-24"
 ---
 
@@ -17,6 +19,9 @@ First, prepare the dataset
 ```{r}
 library(ggplot2)
 library(readxl)
+library("viridis") 
+library("ggpubr")
+
 
 # Load data
 file_path <- "./data/fig7g_statistics.xlsx"
@@ -209,7 +214,7 @@ ggsave("qqplot_mTOR_5XF.pdf",dpi = 600, width = 3.5, height = 3.5)
 
 Using slight fewer quantiles to avoid clutter, we also color the qunatiles
 ```{r}
-library("viridis") 
+# library("viridis") 
 # library(RColorBrewer)
 
 n = max(length(mtor_data$Value), length(f5x_data$Value))
