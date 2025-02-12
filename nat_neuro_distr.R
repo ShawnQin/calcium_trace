@@ -44,7 +44,7 @@ df <- data.frame(
   volume = combined_volume,
   source = factor(combined_labels)  # Convert to a factor
 )
-print(df)
+# print(df)
 
 # ECDF
 g1<-ggplot(df, aes(x = volume, color = source)) +
@@ -97,18 +97,19 @@ gp <- ggscatter(qq.out, x = "Control", y = "AD",
 # n = max(length(AD_data), length(ctr_data))
 # p = (1:n - 1)/(n - 1)
 p = (1:1000)/1000
-q_c = quantile(ctr_data,p,na.rm=TRUE)
-q_AD = quantile(AD_data,p,na.rm=TRUE)
+threshold <- 55
+q_c = quantile(ctr_data[ctr_data<=threshold],p,na.rm=TRUE)
+q_AD = quantile(AD_data[AD_data <= threshold],p,na.rm=TRUE)
 qs = data.frame(Control = q_c, AD = q_AD, Quantile = p*100)
 #plot(q_m, q_f)
-new_qq <- ggplot(qs,aes(x = Control, y= AD, colour = Quantile)) + geom_point(size = 1.5) + 
+new_qq <- ggplot(qs,aes(x = Control, y= AD, colour = Quantile)) + geom_point(size = 1) + 
   coord_fixed() +
-  xlim(0, 250) + ylim(0, 250)  +
+  xlim(0, 55) + ylim(0, 55)  +
   scale_color_viridis(option = "D") +
   # scale_fill_distiller(palette = "Spectral") + 
-  geom_abline(intercept = 0, slope = 1, size = 0.5, colour = "gray") +
-  geom_hline(yintercept = 10,linetype = "dashed", size = 0.2) +
-  geom_vline(xintercept = 10,linetype = "dashed", size = 0.2) +
+  geom_abline(intercept = 0, slope = 1, linewidth = 0.3, colour = "gray") +
+  geom_hline(yintercept = 10,linetype = "dashed", linewidth = 0.2) +
+  geom_vline(xintercept = 10,linetype = "dashed", linewidth = 0.2) +
   font("xlab", size = 12) + font("ylab", size = 12) +
   theme_classic() + 
   theme(axis.title.y = element_text(size = 12),
@@ -119,6 +120,41 @@ new_qq <- ggplot(qs,aes(x = Control, y= AD, colour = Quantile)) + geom_point(siz
 # save as a pdf
 ggsave("nat_neuro_qq_plot_colored.pdf",dpi = 300, width = 4, height = 3.5)
 
+
+### Statistical Test
+max_size <- 55
+ctr_subset <- ctr_data[ctr_data <= max_size]
+AD_subset <- AD_data[AD_data <= max_size]
+
+# one-sided t_test
+# Perform Welch's t-test (one-sided)
+t_test_result <- t.test(AD_subset, ctr_subset, 
+                        alternative = "greater",  # One-sided test for mean(X) > mean(Y)
+                        var.equal = FALSE)        # Welch's t-test
+
+# Print the result
+print(t_test_result)
+
+# thresold = 10 
+# ctr_proportion <- mean(ctr_subset > thresold, na.rm=TRUE)
+# AD_proportion <- mean(AD_subset > thresold, na.rm=TRUE)
+# 
+# # Count successes and totals for z-test
+# ctr_success <- sum(ctr_subset > thresold, na.rm = TRUE)
+# ctr_total <- length(!is.na(ctr_subset))
+# 
+# AD_success <- sum(AD_subset > thresold, na.rm = TRUE)
+# AD_total <- length(!is.na(AD_subset))
+# 
+# # Perform two-proportion z-test
+# prop_test <- prop.test(c(ctr_success, AD_success), c(ctr_total, AD_total), alternative = "greater")
+
+# Print results
+# cat("Proportion of values > 10:\n")
+# cat("mTOR Group: ", ctr_proportion, "\n")
+# cat("5XF Group: ", AD_proportion, "\n\n")
+# cat("Two-proportion z-test results:\n")
+# print(prop_test)
 
 
 
