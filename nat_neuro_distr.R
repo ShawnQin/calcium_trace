@@ -104,12 +104,12 @@ qs = data.frame(Control = q_c, AD = q_AD, Quantile = p*100)
 #plot(q_m, q_f)
 new_qq <- ggplot(qs,aes(x = Control, y= AD, colour = Quantile)) + geom_point(size = 1) + 
   coord_fixed() +
-  xlim(0, 55) + ylim(0, 55)  +
+  xlim(0, 60) + ylim(0,60)  +
   scale_color_viridis(option = "D") +
   # scale_fill_distiller(palette = "Spectral") + 
   geom_abline(intercept = 0, slope = 1, linewidth = 0.3, colour = "gray") +
-  geom_hline(yintercept = 10,linetype = "dashed", linewidth = 0.2) +
-  geom_vline(xintercept = 10,linetype = "dashed", linewidth = 0.2) +
+  # geom_hline(yintercept = 10,linetype = "dashed", linewidth = 0.2) +
+  # geom_vline(xintercept = 10,linetype = "dashed", linewidth = 0.2) +
   font("xlab", size = 12) + font("ylab", size = 12) +
   theme_classic() + 
   theme(axis.title.y = element_text(size = 12),
