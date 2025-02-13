@@ -1,3 +1,5 @@
+# Script to make a QQ plot of the AD and Control group, figure 1O in Myelin-axon interface vulnerability uncovered by subcellular proteomics and imaging in
+# Alzheimer’s disease human brains
 # Statistical comparison between AD and Ctr
 library(ggplot2)
 library(readxl)
